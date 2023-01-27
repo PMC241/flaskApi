@@ -27,6 +27,7 @@ jobs:
 
   deploy:
 
+    runs-on: ubuntu-latest
     steps:
     - name: Creando Despliegue
       run: echo "Desplegado con exito!"
