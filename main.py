@@ -1,3 +1,4 @@
+
 from flask import Flask, current_app, render_template, request, redirect, url_for, session, jsonify
 import os
 from flask_mysqldb import MySQL
@@ -9,6 +10,7 @@ load_dotenv()
 app = Flask(__name__) 
 # Change this to your secret key (can be anything, it's for extra protection)
 app.secret_key = 'holakeHace'
+
 
 app.config['MYSQL_HOST'] = os.getenv("MYSQL_HOST")
 app.config['MYSQL_USER'] = os.getenv("MYSQL_USER")
@@ -46,6 +48,7 @@ def login():
             msg = 'Contraseña o Usuario incorrecto!'
     # Show the login form with message (if any)
     return render_template('login.html', msg=msg)
+
 
 @app.route('/logout')
 def logout():
