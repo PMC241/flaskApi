@@ -1,10 +1,7 @@
-import datetime
 from flask import Flask, jsonify
 import os
 
 app = Flask(__name__)
-
-
 
 data = {
     "Comidas": [
@@ -32,4 +29,4 @@ def index():
     return jsonify({"Choo Chooo": "Bienvenido a la locomotora de python 🚅"})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=os.getenv("PORT", default=5000))
+    app.run(debug=os.getenv("DEBUG"),host='0.0.0.0', port=os.getenv("PORT", default=5000))
