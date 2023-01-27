@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+        <meta content="text/html; charset=utf-8" />
+		<title>Ingreso</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+	</head>
+	<body>
+		<div class="login">
+			<h1>Login</h1>
+			<div class="links">
+				<a href="{{ url_for('login') }}" class="active">Ingreso</a>
+				<a href="{{ url_for('registro') }}">Registro</a>
+			</div>
+			<form action="{{ url_for('login') }}" method="post">
+				<label for="usuario">
+					<i class="fas fa-user"></i>
+				</label>
+				<input type="text" name="usuario" placeholder="usuario" id="usuario" required>
+
+				<label for="password">
+					<i class="fas fa-lock"></i>
+				</label>
+				<input type="password" name="password" placeholder="Password" id="password" required>
+
+				<div class="msg">{{ msg }}</div>
+				<input type="submit" value="Ingreso">
+			</form>
+		</div>
+	</body>
+</html>
