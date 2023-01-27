@@ -1,24 +1,27 @@
 
-from flask import Flask, current_app, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask,Blueprint, current_app, render_template, request, redirect, url_for, session, jsonify
 import os
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
 from dotenv import load_dotenv
-load_dotenv()
+from controladores.api import api
 
+load_dotenv()
 app = Flask(__name__) 
+
 # Change this to your secret key (can be anything, it's for extra protection)
 app.secret_key = 'holakeHace'
-
 
 app.config['MYSQL_HOST'] = os.getenv("MYSQL_HOST")
 app.config['MYSQL_USER'] = os.getenv("MYSQL_USER")
 app.config['MYSQL_PASSWORD'] = os.getenv("MYSQL_PASSWORD")
 app.config['MYSQL_DB'] = os.getenv("MYSQL_DB")
-
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 # Intialize MySQL
 mysql = MySQL(app)
+
+app.register_blueprint(api)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -48,7 +51,6 @@ def login():
             msg = 'Contraseña o Usuario incorrecto!'
     # Show the login form with message (if any)
     return render_template('login.html', msg=msg)
-
 
 @app.route('/logout')
 def logout():
@@ -89,7 +91,6 @@ def registro():
             mysql.connection.commit()
             msg = 'Te has registrado con exito!'
 
-
     elif request.method == 'POST':
         # Form is empty... (no POST data)
         msg = 'Porfavor Ingresa datos en el formulario!'
@@ -112,9 +113,9 @@ def perfil():
         # We need all the account info for the user so we can display it on the profile page
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM cuentas WHERE id = %s', (session['id'],))
-        account = cursor.fetchone()
+        cuenta = cursor.fetchone()
         # Show the profile page with account info
-        return render_template('perfil.html', account=account)
+        return render_template('perfil.html', cuenta=cuenta)
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
@@ -126,7 +127,6 @@ def toggle():
     health_status = not health_status
     return jsonify(health_value=health_status)
 
-
 @app.route('/healthcheck')
 def health():
     if health_status:
@@ -135,8 +135,20 @@ def health():
     else:
         resp = jsonify(health="muerto")
         resp.status_code = 500
-
     return resp
+
+@app.route('/recursos')
+def getRecursos():
+    return jsonify(mensaje="Soy un recurso web")
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify(message="Endpoint no encontrado"), 404
+
+@app.errorhandler(405)
+def que_buscas(error):
+    return jsonify(message="Hey tu!, que estas buscando?"), 405
+
 
 if __name__ == '__main__':
     app.run(debug=os.getenv("DEBUG"),host='0.0.0.0', port=os.getenv("PORT", default=5000))

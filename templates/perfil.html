@@ -3,22 +3,22 @@
 {% block title %}Perfil{% endblock %}
 
 {% block content %}
-<h2>Perfil Page</h2>
+<h2>Perfil</h2>
 <div>
-    <p>Your account details are below:</p>
+    <p>Detalles de la cuenta:</p>
     <table aria-describedby="mydesc">
         <th>
             <tr>
                 <td>usuario:</td>
-                <td>{{ account['usuario'] }}</td>
+                <td>{{ cuenta['usuario'] }}</td>
             </tr>
             <tr>
                 <td>Contraseña:</td>
-                <td>{{ account['password'] }}</td>
+                <td>{{ cuenta['password'] }}</td>
             </tr>
             <tr>
                 <td>Correo:</td>
-                <td>{{ account['correo'] }}</td>
+                <td>{{ cuenta['correo'] }}</td>
             </tr>
         </th>
     </table>
